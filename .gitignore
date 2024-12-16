@@ -1,0 +1,5 @@
+seg/runs/train-seg/*
+seg/runs/predict-seg/*
+*__pycache__*
+seg/utils/google_utils.py
+archive/
