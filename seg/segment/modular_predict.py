@@ -63,7 +63,6 @@ def load_model(weights = ROOT / 'weights/best.pt',  # weight.pt path(s)
 
 @smart_inference_mode()
 def run(
-        model, #Loaded model
         device, # cuda device, i.e. 0 or 0,1,2,3 or cpu
         source=ROOT / 'data/images',  # file/dir/URL/glob, 0 for webcam
         imgsz=(640, 640),  # inference size (height, width)
@@ -87,7 +86,19 @@ def run(
         hide_conf=False,  # hide confidences
         progress_callback=None,
         split_no_det=False,
+        model = None, #Loaded model
+        weights = None,
+        data = None,
+        dnn =False,
+        half=False,
+        update=False
 ):
+    if not model:
+        if not weights or not data:
+            print('Neither a model nor weights and a data.yaml were provided. Please provide a model or the weights and data.yaml paths')
+        else:
+            model, device = load_model(weights=weights, device=device, data=data, dnn=dnn, half=half, update=update)
+
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
